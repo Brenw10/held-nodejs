@@ -5,7 +5,7 @@ const setAccessToken = token => {
 }
 
 const getCurrentUser = () => {
-    return new Promise(function (resolve) {
+    return new Promise(resolve => {
         graph.get('me?fields=id,name,email,age_range,timezone,locale', (err, res) => resolve(res))
     });
 }
