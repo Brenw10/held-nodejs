@@ -8,7 +8,8 @@
   "dependencies": {
     "body-parser": "~1.17.1",
     "express": "~4.15.2",
-    "fbgraph": "^1.4.1"
+    "fbgraph": "^1.4.1",
+    "mongoose": "^4.11.5"
   },
   "devDependencies": {
     "gulp": "^3.9.1",
