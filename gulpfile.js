@@ -1,6 +1,7 @@
 const gulp = require('gulp');
 const gutil = require('gulp-util');
 const nodemon = require('gulp-nodemon');
+const taskListing = require('gulp-task-listing');
 
 gulp.task('serve-dev', () => {
     nodemon({
@@ -14,3 +15,5 @@ gulp.task('serve-dev', () => {
         gutil.log(gutil.colors.green('Application was started!'));
     });
 });
+
+gulp.task('default', taskListing);
