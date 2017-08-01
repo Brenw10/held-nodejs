@@ -13,8 +13,11 @@ const getPosts = token => {
             .lean()
             .exec((err, posts) =>
                 posts
+                    .map(util.countArrayByObjectKey('likes'))
                     .map(util.removeKeyFromObject('uid'))
                     .map(util.removeKeyFromObject('to'))
+                    .map(util.removeKeyFromObject('likes'))
+                    .map(util.removeKeyFromObject('comments'))
             );
     });
 }
