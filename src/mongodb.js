@@ -7,13 +7,13 @@ var postSchema = new mongoose.Schema(
         uid: { type: String, required: true },
         url: { type: String, default: null },
         text: { type: String, default: null, maxlength: 150 },
-        date: { type: Date, default: Date.now },
+        datetime: { type: Date, default: Date.now },
         to: [String],
         comments: [
             {
                 text: { type: String, require: true, maxlength: 150 },
                 likes: [String],
-                date: { type: Date, default: Date.now },
+                datetime: { type: Date, default: Date.now },
             }
         ],
         likes: [String]

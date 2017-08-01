@@ -8,7 +8,8 @@ const getPosts = token => {
     return user.getUser(token).then(user => {
         return db.Mongoose
             .model('postCollection', db.PostSchema, 'postCollection')
-            .find({ to: user.id })
+            .find({ $or: [{ uid: user.id }, { to: user.id }] })
+            .sort({ datetime: -1 })
             .lean()
             .exec((err, posts) =>
                 posts
@@ -29,7 +30,7 @@ const setPost = (user, friends, data) => {
                 .map(util.removeKeyFromObject('name'))
                 .map(list => list.id)
         });
-        console.log(data);
+
         post.save(err => resolve(err));
     });
 }
