@@ -3,7 +3,7 @@ const gutil = require('gulp-util');
 const nodemon = require('gulp-nodemon');
 const taskListing = require('gulp-task-listing');
 
-gulp.task('serve-dev', () => {
+gulp.task('serve', () => {
     nodemon({
         script: 'app.js',
         ext: 'js html css',
