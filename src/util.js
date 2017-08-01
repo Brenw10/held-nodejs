@@ -6,5 +6,5 @@ const removeKeyFromObject = key => {
 }
 
 module.exports = {
-    removeKeyFromObject: removeKeyFromObject
+    removeKeyFromObject: removeKeyFromObject,
 }

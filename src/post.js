@@ -1,6 +1,6 @@
 const graph = require('fbgraph');
 
-const user = require(`${process.env.PWD}/src/user`);
+const user = require('./user');
 const db = require('./mongodb');
 const util = require('./util');
 
@@ -18,6 +18,30 @@ const getPosts = token => {
     });
 }
 
+const setPost = (user, friends, data) => {
+    return new Promise(resolve => {
+        const Post = db.Mongoose.model('postCollection', db.PostSchema, 'postCollection');
+        const post = new Post({
+            uid: user.id,
+            url: data.url,
+            text: data.text,
+            to: friends.data
+                .map(util.removeKeyFromObject('name'))
+                .map(list => list.id)
+        });
+        console.log(data);
+        post.save(err => resolve(err));
+    });
+}
+
+const handleSetPost = (token, data) => {
+    return Promise.all([
+        user.getUser(token),
+        user.getFriends(token)
+    ]).then(snaps => setPost(snaps[0], snaps[1], data));
+}
+
 module.exports = {
     getPosts: getPosts,
+    handleSetPost: handleSetPost,
 }
