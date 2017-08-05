@@ -6,12 +6,12 @@ var postSchema = new mongoose.Schema(
     {
         uid: { type: String, required: true },
         url: { type: String, default: null },
-        text: { type: String, default: null, maxlength: 150 },
+        text: { type: String, default: null, maxlength: 300 },
         datetime: { type: Date, default: Date.now },
         to: [String],
         comments: [
             {
-                text: { type: String, require: true, maxlength: 150 },
+                text: { type: String, require: true, maxlength: 300 },
                 likes: [String],
                 datetime: { type: Date, default: Date.now },
             }

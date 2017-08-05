@@ -13,4 +13,4 @@ router.get('/user/friends', (req, res) => {
   user.getFriends(token).then(friends => res.send(friends));
 });
 
-module.exports = router;  
+module.exports = router;

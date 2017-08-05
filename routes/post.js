@@ -11,7 +11,8 @@ router.get('/posts', (req, res) => {
 
 router.post('/post', (req, res) => {
   const token = req.headers['access-token'];
-  post.handleSetPost(token, req.body).then(invalid => res.sendStatus(!invalid ? 200 : 401));
+  post.handleSetPost(token, req.body)
+    .then(invalid => res.sendStatus(!invalid ? 200 : 401));
 });
 
 module.exports = router;

@@ -17,7 +17,6 @@ const getPosts = token => {
                     .map(util.removeKeyFromObject('uid'))
                     .map(util.removeKeyFromObject('to'))
                     .map(util.removeKeyFromObject('likes'))
-                    .map(util.removeKeyFromObject('comments'))
             );
     });
 }
@@ -38,11 +37,26 @@ const setPost = (user, friends, data) => {
     });
 }
 
-const handleSetPost = (token, data) => {
-    return Promise.all([
-        user.getUser(token),
-        user.getFriends(token)
-    ]).then(snaps => setPost(snaps[0], snaps[1], data));
+const validSetPost = (user, friends, data) => {
+    if ([null, undefined].indexOf(data.url) >= 0 && [null, undefined].indexOf(data.text) >= 0)
+        return false;
+    if (user.error || friends.error)
+        return false;
+    if ([null, undefined].indexOf(data.text) === -1 && data.text.length > 300)
+        return false;
+    return true;
+}
+
+const handleSetPost = async (token, data) => {
+    const currentUser = await user.getUser(token);
+    const userFriends = await user.getFriends(token);
+
+    return new Promise(resolve => {
+        if (!validSetPost(currentUser, userFriends, data)) {
+            resolve(true);
+        }
+        setPost(currentUser, userFriends, data).then(err => resolve(err));
+    });
 }
 
 module.exports = {
