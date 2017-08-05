@@ -5,10 +5,10 @@ const removeKeyFromObject = key => {
     }
 }
 
-const countArrayByObjectKey = key => {
+const countArrayByObjectKey = (key, name) => {
     return obj => {
         let newObj = obj;
-        newObj[`${key}Length`] = obj[key].length;
+        newObj[name] = obj[key].length;
         return newObj;
     }
 }

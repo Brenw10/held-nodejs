@@ -13,7 +13,7 @@ const getPosts = token => {
             .lean()
             .exec((err, posts) =>
                 posts
-                    .map(util.countArrayByObjectKey('likes'))
+                    .map(util.countArrayByObjectKey('likes', 'likesLength'))
                     .map(util.removeKeyFromObject('uid'))
                     .map(util.removeKeyFromObject('to'))
                     .map(util.removeKeyFromObject('likes'))
@@ -24,11 +24,13 @@ const getPosts = token => {
 
 const setPost = (user, friends, data) => {
     return new Promise(resolve => {
+        if (data.url === null && data.text === null || data.text.length > 300) resolve('error');
+
         const Post = db.Mongoose.model('postCollection', db.PostSchema, 'postCollection');
         const post = new Post({
             uid: user.id,
             url: data.url,
-            text: data.text,
+            text: data.text.trim(),
             to: friends.data
                 .map(util.removeKeyFromObject('name'))
                 .map(list => list.id)
