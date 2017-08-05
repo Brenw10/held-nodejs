@@ -24,7 +24,8 @@ const getPosts = token => {
 
 const setPost = (user, friends, data) => {
     return new Promise(resolve => {
-        if (data.url === null && data.text === null || data.text.length > 300) resolve('error');
+        if (data.url === null && data.text === null) resolve('error');
+        if (data.text !== null && data.text.length > 300) resolve('error')
 
         const Post = db.Mongoose.model('postCollection', db.PostSchema, 'postCollection');
         const post = new Post({
