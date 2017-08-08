@@ -7,13 +7,20 @@ const removeKeyFromObject = key => {
 
 const countArrayByObjectKey = (key, name) => {
     return obj => {
-        let newObj = obj;
-        newObj[name] = obj[key].length;
-        return newObj;
+        obj[name] = obj[key].length;
+        return obj;
+    }
+}
+
+const existOnArray = (key, existing, name) => {
+    return obj => {
+        obj[name] = obj[key].indexOf(existing) !== -1;
+        return obj;
     }
 }
 
 module.exports = {
     removeKeyFromObject: removeKeyFromObject,
     countArrayByObjectKey: countArrayByObjectKey,
+    existOnArray: existOnArray
 }

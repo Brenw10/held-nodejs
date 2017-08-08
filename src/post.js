@@ -4,6 +4,15 @@ const user = require('./user');
 const db = require('./mongodb');
 const util = require('./util');
 
+const getPostsExpose = (user, posts) => {
+    return posts
+        .map(util.existOnArray('likes', user.id, 'liked'))
+        .map(util.countArrayByObjectKey('likes', 'likesLength'))
+        .map(util.removeKeyFromObject('uid'))
+        .map(util.removeKeyFromObject('to'))
+        .map(util.removeKeyFromObject('likes'));
+}
+
 const getPosts = token => {
     return user.getUser(token).then(user => {
         return db.Mongoose
@@ -11,13 +20,7 @@ const getPosts = token => {
             .find({ $or: [{ uid: user.id }, { to: user.id }] })
             .sort({ datetime: -1 })
             .lean()
-            .exec((err, posts) =>
-                posts
-                    .map(util.countArrayByObjectKey('likes', 'likesLength'))
-                    .map(util.removeKeyFromObject('uid'))
-                    .map(util.removeKeyFromObject('to'))
-                    .map(util.removeKeyFromObject('likes'))
-            );
+            .exec((err, posts) => getPostsExpose(user, posts));
     });
 }
 
@@ -59,7 +62,37 @@ const handleSetPost = async (token, data) => {
     });
 }
 
+const setLike = async (token, data) => {
+    const invalid = await user.isTokenValid(token);
+    const currentUser = await user.getUser(token);
+
+    return new Promise(resolve => {
+        if (invalid) resolve(null);
+        const Post = db.Mongoose.model('postCollection', db.PostSchema, 'postCollection');
+        Post.findByIdAndUpdate(data._id, { $addToSet: { likes: currentUser.id } }, { new: true })
+            .lean().exec((err, post) => {
+                resolve(getPostsExpose(currentUser, [post])[0]);
+            });
+    });
+}
+
+const removeLike = async (token, data) => {
+    const invalid = await user.isTokenValid(token);
+    const currentUser = await user.getUser(token);
+
+    return new Promise(resolve => {
+        if (invalid) resolve(null);
+        const Post = db.Mongoose.model('postCollection', db.PostSchema, 'postCollection');
+        Post.findByIdAndUpdate(data._id, { $pull: { likes: currentUser.id } }, { new: true })
+            .lean().exec((err, post) => {
+                resolve(getPostsExpose(currentUser, [post])[0]);
+            });
+    });
+}
+
 module.exports = {
     getPosts: getPosts,
     handleSetPost: handleSetPost,
+    setLike: setLike,
+    removeLike: removeLike
 }
