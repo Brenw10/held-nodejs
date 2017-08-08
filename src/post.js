@@ -10,7 +10,11 @@ const getPostsExpose = (user, posts) => {
         .map(util.countArrayByObjectKey('likes', 'likesLength'))
         .map(util.removeKeyFromObject('uid'))
         .map(util.removeKeyFromObject('to'))
-        .map(util.removeKeyFromObject('likes'));
+        .map(util.removeKeyFromObject('likes'))
+        .map(post => {
+            post.comments = post.comments.map(util.removeKeyFromObject('uid'));
+            return post;
+        });
 }
 
 const getPosts = token => {
@@ -90,9 +94,25 @@ const removeLike = async (token, data) => {
     });
 }
 
+const setComment = async (token, data) => {
+    const invalid = await user.isTokenValid(token);
+    const currentUser = await user.getUser(token);
+    const comment = { uid: currentUser.id, text: data.text };
+
+    return new Promise(resolve => {
+        if (invalid) resolve(null);
+        const Post = db.Mongoose.model('postCollection', db.PostSchema, 'postCollection');
+        Post.findByIdAndUpdate(data._id, { $push: { comments: comment } }, { new: true })
+            .lean().exec((err, post) => {
+                resolve(getPostsExpose(currentUser, [post])[0]);
+            });
+    });
+}
+
 module.exports = {
     getPosts: getPosts,
     handleSetPost: handleSetPost,
     setLike: setLike,
-    removeLike: removeLike
+    removeLike: removeLike,
+    setComment: setComment
 }

@@ -29,4 +29,11 @@ router.delete('/post/like', (req, res) => {
     .then(response => res.send(response));
 });
 
+router.post('/post/comment', (req, res) => {
+  //todo: check if user can comment the post (his name should contain on to list)
+  const token = req.headers['access-token'];
+  post.setComment(token, req.body)
+    .then(response => res.send(response));
+});
+
 module.exports = router;

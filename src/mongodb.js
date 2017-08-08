@@ -11,6 +11,8 @@ var postSchema = new mongoose.Schema(
         to: [String],
         comments: [
             {
+                _id: { type: mongoose.Schema.ObjectId, default: new mongoose.Types.ObjectId() },
+                uid: { type: String, required: true },
                 text: { type: String, require: true, maxlength: 300 },
                 likes: [String],
                 datetime: { type: Date, default: Date.now },
