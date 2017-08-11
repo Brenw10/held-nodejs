@@ -17,7 +17,7 @@ gulp.task('serve-dev', () => {
     });
 });
 
-gulp.task('serve-prod', ['pull', 'serve-dev']);
+gulp.task('serve-prod', ['serve-dev']);
 
 gulp.task('pull', function (done) {
     git.pull('origin', 'master', {}, function (err) {
