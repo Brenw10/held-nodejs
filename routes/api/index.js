@@ -11,4 +11,9 @@ router.use('/user', user);
 router.use('/user', userFriend);
 router.use('/user', userPost);
 
+// App post hierarchy routes
+const post = require('./posts');
+
+router.use('/posts', post);
+
 module.exports = router;

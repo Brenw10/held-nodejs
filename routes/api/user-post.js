@@ -13,12 +13,6 @@ router.post('/:user/post', function (req, res) {
 
 router.get('/:user/posts', function (req, res) {
     userPost
-        .getPosts(req.user.id)
-        .then(data => res.send(data));
-});
-
-router.get('/:user/my_posts', function (req, res) {
-    userPost
         .getUserPosts(req.user.id)
         .then(data => res.send(data));
 });
