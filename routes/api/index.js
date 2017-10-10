@@ -12,7 +12,7 @@ router.use('/user', userFriend);
 router.use('/user', userPost);
 
 // App post hierarchy routes
-const post = require('./posts');
+const post = require('./post');
 
 router.use('/posts', post);
 
