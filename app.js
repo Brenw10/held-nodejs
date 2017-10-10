@@ -14,7 +14,7 @@ const auth = require('./services/auth');
 const api = require('./routes/api');
 
 // App set routes
-app.use('/api', auth.isUserAuthenticated, api);
+app.use('/api', auth.authenticate, api);
 
 // Starting serve
 app.listen(8080);
