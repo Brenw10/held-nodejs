@@ -7,15 +7,9 @@ const schema = new mongoose.Schema({
     name: {type: String, default: null},
     text: {type: String, default: null, maxlength: 300},
     datetime: {type: Date, default: Date.now},
-    to: [
-        {
-            id: {type: String, require: true},
-            name: {type: String, require: true}
-        }
-    ],
+    to: [String],
     comments: [
         {
-            _id: {type: mongoose.Schema.ObjectId, default: new mongoose.Types.ObjectId()},
             id: {type: String, required: true},
             text: {type: String, require: true, maxlength: 300},
             likes: [String],

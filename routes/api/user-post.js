@@ -11,4 +11,10 @@ router.post('/:user/post', function (req, res) {
         .catch(data => res.status(400).send({error: data}));
 });
 
+router.get('/:user/posts', function (req, res) {
+    userPost
+        .getPosts(req.user)
+        .then(data => res.send(data));
+});
+
 module.exports = router;

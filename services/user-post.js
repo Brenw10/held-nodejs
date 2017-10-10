@@ -10,7 +10,7 @@ async function createPost(user, data) {
         text: data.text,
         url: data.url,
         name: data.name,
-        to: result.data
+        to: result.data.map(item => item.id)
     });
 
     return post.save();
@@ -22,6 +22,15 @@ function isValidPost(post) {
     return hasContent;
 }
 
+function getPosts(user) {
+    return Post
+        .find({ $or: [{ id: user.id }, { to: user.id }] })
+        .sort({ datetime: -1 })
+        .lean()
+        .exec((err, data) => data);
+}
+
 module.exports = {
-    createPost: createPost
+    createPost: createPost,
+    getPosts: getPosts
 };
