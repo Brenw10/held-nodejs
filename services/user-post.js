@@ -2,7 +2,7 @@ const Post = require('../models/post-collection');
 const userFriend = require('./user-friend');
 
 async function createPost(user, data) {
-    if(!isValidPost(data)) return Promise.reject('Invalid data');
+    if (!isValidPost(data)) return Promise.reject('Invalid data');
 
     const result = await userFriend.getFriends(user.token);
     const post = new Post({
@@ -22,9 +22,17 @@ function isValidPost(post) {
     return hasContent;
 }
 
-function getPosts(user) {
+function getPosts(userId) {
     return Post
-        .find({ $or: [{ id: user.id }, { to: user.id }] })
+        .find({ $or: [{ id: userId }, { to: userId }] })
+        .sort({ datetime: -1 })
+        .lean()
+        .exec((err, data) => data);
+}
+
+function getUserPosts(userId) {
+    return Post
+        .find({ $or: [{ id: userId }] })
         .sort({ datetime: -1 })
         .lean()
         .exec((err, data) => data);
@@ -32,5 +40,6 @@ function getPosts(user) {
 
 module.exports = {
     createPost: createPost,
-    getPosts: getPosts
+    getPosts: getPosts,
+    getUserPosts: getUserPosts
 };
