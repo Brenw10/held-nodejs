@@ -34,10 +34,26 @@ function getUserPosts(userId) {
         .exec((err, data) => data);
 }
 
+function addLike(userId, postId) {
+    return Post
+        .findByIdAndUpdate(postId, { $addToSet: { likes: userId } }, { new: true })
+        .select('-id -likes -comments -to')
+        .lean().exec((err, post) => post);
+}
+
+function removeLike(userId, postId) {
+    return Post
+        .findByIdAndUpdate(postId, { $pull: { likes: userId } }, { new: true })
+        .select('-id -likes -comments -to')
+        .lean().exec((err, post) => post);
+}
+
 isValidPost = post => post.text || post.url;
 
 module.exports = {
     createPost: createPost,
     getPosts: getPosts,
-    getUserPosts: getUserPosts
+    getUserPosts: getUserPosts,
+    addLike: addLike,
+    removeLike: removeLike
 };
