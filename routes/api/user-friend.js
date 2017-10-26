@@ -6,8 +6,8 @@ const router = express.Router();
 
 router.get('/:user/friends', function (req, res) {
     userFriend
-      .getFriends(req.user.token)
-      .then(data => res.send(data));
+        .getFriends(req.user.token)
+        .then(data => res.send(data));
 });
 
 module.exports = router;
