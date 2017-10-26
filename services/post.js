@@ -23,8 +23,17 @@ function removeLike(userId, postId) {
         .lean().exec((err, post) => post);
 }
 
+function addComment(userId, postId, data) {
+    const comment = { id: userId, text: data.text };
+    return Post
+        .findByIdAndUpdate(postId, { $push: { comments: comment } }, { new: true })
+        .select('-id -likes -comments -to')
+        .lean().exec((err, post) => post);
+}
+
 module.exports = {
     getPosts: getPosts,
     addLike: addLike,
-    removeLike: removeLike
+    removeLike: removeLike,
+    addComment: addComment
 };

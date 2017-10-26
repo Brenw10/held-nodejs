@@ -15,4 +15,10 @@ router.delete('/:post/like', function (req, res) {
         .then(data => res.send(data));
 });
 
+router.post('/:post/comment', function (req, res) {
+    post
+        .addComment(req.user.id, req.params.post, req.body)
+        .then(data => res.send(data));
+});
+
 module.exports = router;
