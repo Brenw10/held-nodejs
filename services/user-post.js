@@ -25,6 +25,7 @@ function isValidPost(post) {
 function getPosts(userId) {
     return Post
         .find({ $or: [{ id: userId }, { to: userId }] })
+        .select('-id -likes -comments -to')
         .sort({ datetime: -1 })
         .lean()
         .exec((err, data) => data);
@@ -33,6 +34,7 @@ function getPosts(userId) {
 function getUserPosts(userId) {
     return Post
         .find({ $or: [{ id: userId }] })
+        .select('-id -likes -comments -to')
         .sort({ datetime: -1 })
         .lean()
         .exec((err, data) => data);
