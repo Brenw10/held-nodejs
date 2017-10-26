@@ -9,17 +9,11 @@ async function createPost(user, data) {
         id: user.id,
         text: data.text,
         url: data.url,
-        name: data.name,
+        title: data.title,
         to: result.data.map(item => item.id)
     });
 
     return post.save();
-}
-
-function isValidPost(post) {
-    const hasContent = post.text || post.url;
-
-    return hasContent;
 }
 
 function getPosts(userId) {
@@ -39,6 +33,8 @@ function getUserPosts(userId) {
         .lean()
         .exec((err, data) => data);
 }
+
+isValidPost = post => post.text || post.url;
 
 module.exports = {
     createPost: createPost,

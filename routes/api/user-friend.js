@@ -1,6 +1,5 @@
 const express = require('express');
 const graph = require('fbgraph');
-
 const userFriend = require('../../services/user-friend');
 
 const router = express.Router();

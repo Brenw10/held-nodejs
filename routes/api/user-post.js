@@ -1,5 +1,4 @@
 const express = require('express');
-
 const userPost = require('../../services/user-post');
 
 const router = express.Router();
