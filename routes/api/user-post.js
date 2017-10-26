@@ -16,16 +16,4 @@ router.get('/:user/posts', function (req, res) {
         .then(data => res.send(data));
 });
 
-router.post('/:user/post/:post/like', function (req, res) {
-    userPost
-        .addLike(req.user.id, req.params.post)
-        .then(data => res.send(data));
-});
-
-router.delete('/:user/post/:post/like', function (req, res) {
-    userPost
-        .removeLike(req.user.id, req.params.post)
-        .then(data => res.send(data));
-});
-
 module.exports = router;
